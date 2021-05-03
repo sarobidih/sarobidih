@@ -1,6 +1,6 @@
 def help():
     help = ('Hello 🤩👋 je pense que vous avez fait une erreur de syntaxe\n\n'
-          '🔑 Recherche produit ==> mitady <therme rechercher> (exemple: mitady sac) \n\n'
+          '🔑 Recherche produit ==> search <therme rechercher> (exemple: search sac) \n\n'
           "J'espère vous être utile. 👨‍🔧")
     return help
 

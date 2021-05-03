@@ -75,12 +75,12 @@ def receive_message():
 									send_message(recipient_id,
 												 'Désolé, Une Erreur est survenue😪😪\n\nVeuillez Réssayer après 10 mn⏭️')
 
-						elif (receive_message[0].upper() == "YTB"):
+						elif (receive_message[0].upper() == "SEARCH"):
 							if len(receive_message) < 2:
-								send_message(recipient_id,'Veuillez réessayer la syntaxe exacte doit être ytb + mot_recherché')
+								send_message(recipient_id,'Veuillez réessayer la syntaxe exacte doit être search + produit_recherché')
 							else:
 								response_query = ' '.join(map(str, receive_message[1:]))
-								send_message(recipient_id,'ok, recherche youtube 🔑{}🔑 en cours ....'.format(response_query))
+								send_message(recipient_id,'ok, recherche produit 🔑{}🔑 en cours ....'.format(response_query))
 								send_generic_template_youtube(recipient_id, response_query)
 
 						elif (receive_message[0].upper() == "HELP"):
@@ -660,6 +660,57 @@ def send_generic_template_youtube(recipient_id, research_query):
 	resp = requests.post(url, headers={"Content-Type": "application/json"}, json=data)
 	postback_data = request.get_json()
 	return "success"
+
+def send_generic_template_produit(recipient_id, research_query):
+	url = "https://graph.facebook.com/v9.0/me/messages?access_token=" + ACCESS_TOKEN
+	results = scrapping_harenantsika_product(research_query)
+
+
+	payload = []
+	for result in results:
+		title = result[0]
+		price = result[1]
+		desc = result[2]
+		img = result[3]
+		lien = result[4]
+		payload.append({
+			"title": "{} - Prix {}".format(title, price),
+			"image_url": img,
+			"subtitle": " Description :  {}".format(desc),
+			"default_action": {
+				"type": "web_url",
+				"url": lien,
+				"webview_height_ratio": "tall",
+			},
+			"buttons": [
+				{
+					"type": "web_url",
+					"title": "Acheter",
+					"url": "{}".format(lien)
+				},
+			]
+		})
+	extra_data = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "generic",
+				"elements": payload
+			}
+		}
+	}
+
+	data = {
+		'recipient': {'id': recipient_id},
+		'message': {
+			"attachment": extra_data["attachment"]
+		}
+	}
+	resp = requests.post(url, headers={"Content-Type": "application/json"}, json=data)
+	postback_data = request.get_json()
+	return "success"
+
+
 def send_generic_template_download_youtube(recipient_id, link):
 	url = "https://graph.facebook.com/v9.0/me/messages?access_token=" + ACCESS_TOKEN
 	payload = []

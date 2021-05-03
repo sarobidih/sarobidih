@@ -1,5 +1,6 @@
 import urllib
 from bs4 import BeautifulSoup
+import requests
 
 def scrapping_harenantsika_product (search_term):
     product_list = []
@@ -30,6 +31,9 @@ def scrapping_harenantsika_product (search_term):
             for images in div.select('img.replace-2x'):
                 img = images.get('data-original')
                 product_item.append(img)
+            for link in div.select('a.product_img_link', href=True):
+                lien = link.get("href")
+                product_item.append(lien)
             product_list.append(product_item)
 
         return product_list
@@ -37,6 +41,16 @@ def scrapping_harenantsika_product (search_term):
     except:
         raise Exception("Erreur")
 if __name__ == '__main__':
-    result = scrapping_harenantsika_product("sac")
-    print(len(result))
-    print(result)
+    results = scrapping_harenantsika_product("sac")
+    print(len(results))
+    for ressult in results:
+        title = ressult[0]
+        price = ressult[1]
+        desc = ressult[2]
+        img= ressult[3]
+        lien = ressult[4]
+        print(title)
+        print(price)
+        print(desc)
+        print(img)
+        print(lien)
