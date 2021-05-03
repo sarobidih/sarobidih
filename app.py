@@ -2,7 +2,7 @@ import random, json
 from flask import Flask, request
 from pymessenger.bot import Bot
 import requests
-from scrapping import scrapping_harenantsika_product
+from scrapping import scrapping_harenantsika_product, scrapping_harenantsika_magasin
 from response import help, other
 from fbmessenger import BaseMessenger
 from fbmessenger.elements import Text
@@ -141,6 +141,55 @@ def send_generic_template_produit(recipient_id, research_query):
 					"type": "web_url",
 					"title": "Acheter",
 					"url": "{}".format(lien)
+				},
+			]
+		})
+	extra_data = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "generic",
+				"elements": payload
+			}
+		}
+	}
+
+	data = {
+		'recipient': {'id': recipient_id},
+		'message': {
+			"attachment": extra_data["attachment"]
+		}
+	}
+	resp = requests.post(url, headers={"Content-Type": "application/json"}, json=data)
+	postback_data = request.get_json()
+	return "success"
+
+def send_generic_template_magasin(recipient_id, research_query):
+	url = "https://graph.facebook.com/v9.0/me/messages?access_token=" + ACCESS_TOKEN
+	results = scrapping_harenantsika_magasin(research_query)
+
+
+	payload = []
+	for result in results:
+		title = result[0]
+		img = result[1]
+		desc = result[2]
+		link = result[3]
+
+		payload.append({
+			"title": "{}".format(title),
+			"image_url": img,
+			"subtitle": " Description :  {}".format(desc),
+			"default_action": {
+				"type": "web_url",
+				"url": link,
+				"webview_height_ratio": "tall",
+			},
+			"buttons": [
+				{
+					"type": "web_url",
+					"title": "Acheter",
+					"url": "{}".format(link)
 				},
 			]
 		})
