@@ -81,7 +81,7 @@ def receive_message():
 							else:
 								response_query = ' '.join(map(str, receive_message[1:]))
 								send_message(recipient_id,'ok, recherche produit 🔑{}🔑 en cours ....'.format(response_query))
-								send_generic_template_youtube(recipient_id, response_query)
+								send_generic_template_produit(recipient_id, response_query)
 
 						elif (receive_message[0].upper() == "HELP"):
 							response_sent_text = help()
