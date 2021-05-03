@@ -2,7 +2,7 @@ import urllib
 from bs4 import BeautifulSoup
 import requests
 
-def scrapping_harenantsika_product (search_term):
+def scrapping_harenantsika_product (search_term, max=15):
     product_list = []
     try:
         url = 'https://nyharenantsika.com/fr/recherche?controller=search&orderby=position&orderway=desc&search_query_cat=2&search_query={}&submit_search='.format(search_term)
@@ -34,7 +34,10 @@ def scrapping_harenantsika_product (search_term):
             for link in div.select('a.product_img_link', href=True):
                 lien = link.get("href")
                 product_item.append(lien)
-            product_list.append(product_item)
+            if (len(product_list) < max):
+                product_list.append(product_item)
+            else :
+                break
 
         return product_list
 
