@@ -1,5 +1,6 @@
 def help():
     help = ("Raha mitady vokatra manoka ianao soraty hoe: SEARCH+(ny karazana entana tadiavinao) oh: SEARCH+ SAC \n\n"
+            "SEARCH_MAGASIN+(karazana magasin tadiavinao) oh: SEARCH_MAGASIN + HARENA \n\n"
           'Mety misy fahadisoana eo amin’ny fanoratana nataonao. Azafady hamarino. ')
     return help
 
