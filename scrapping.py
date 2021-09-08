@@ -47,15 +47,13 @@ def scrapping_harenantsika_product (search_term, max=15):
 def scrapping_harenantsika_magasin(search_term, max=15):
     product_list = []
     try:
-        url = 'https://nyharenantsika.com/fr/recherche?controller=search&orderby=position&orderway=desc&search_query_cat=store&search_query={}&submit_search='.format(
-            search_term)
+        url = 'https://nyharenantsika.com/fr/recherche?controller=search&orderby=position&orderway=desc&search_query_cat=store&search_query={}&submit_search='.format(search_term)
 
         # Perform the request
         request = urllib.request.Request(url)
 
         # Set a normal User Agent header, otherwise Google will block the request.
-        request.add_header('User-Agent',
-                           'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36')
+        request.add_header('User-Agent','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36')
         raw_response = urllib.request.urlopen(request).read()
         html = raw_response.decode("utf-8")
         soup = BeautifulSoup(html, 'html.parser')
@@ -105,7 +103,7 @@ def scrapping_harenantsika_magasin(search_term, max=15):
         raise Exception("Erreur")
 
 if __name__ == '__main__':
-    results = scrapping_harenantsika_magasin("harena")
+    results = scrapping_harenantsika_magasin("fy")
     print(len(results))
     print(results)
     for result in results:

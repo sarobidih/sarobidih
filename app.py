@@ -75,6 +75,18 @@ def receive_message():
 									send_message(recipient_id,'Désolé, votre recherche produit 🔑{}🔑 n\'éxiste pas'.format(response_query))
 								else:
 									send_generic_template_produit(recipient_id, response_query)
+						if (receive_message[0].upper() == "SEARCH_MAGASIN"):
+							if len(receive_message) < 2:
+								send_message(recipient_id,'Veuillez réessayer la syntaxe exacte doit être search + produit_recherché')
+							else:
+								response_query = ' '.join(map(str, receive_message[1:]))
+								send_message(recipient_id,'ok, recherche produit 🔑{}🔑 en cours ....'.format(response_query))
+								results = scrapping_harenantsika_magasin(response_query)
+								nbr_produit = len(results)
+								if (nbr_produit == 0):
+									send_message(recipient_id,'Désolé, votre recherche produit 🔑{}🔑 n\'éxiste pas'.format(response_query))
+								else:
+									send_generic_template_magasin(recipient_id, response_query)
 
 						elif (receive_message[0].upper() == "HELP"):
 							response_sent_text = help()
